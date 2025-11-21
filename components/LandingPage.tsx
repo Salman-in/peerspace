@@ -1,8 +1,8 @@
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, SignedOut } from "@clerk/nextjs";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-yellow-400">
+    <div className="min-h-screen bg-linear-to-b from-black via-gray-900 to-black text-yellow-400">
       <main className="relative overflow-hidden">
         {/* Hero Section */}
         <section className="relative pt-20 pb-24 sm:pt-28 lg:pt-36">
@@ -16,17 +16,19 @@ export default function LandingPage() {
               and discovering exciting events around you.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
-              <SignUpButton mode="modal">
-                <button className="rounded-lg bg-yellow-400 px-5 py-3 text-sm font-semibold text-black shadow-lg transition hover:bg-yellow-300 focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
-                  Get Started
-                </button>
-              </SignUpButton>
+              <SignedOut>
+                <SignUpButton mode="modal">
+                  <button className="rounded-lg bg-yellow-400 px-5 py-3 text-sm font-semibold text-black shadow-lg transition hover:bg-yellow-300 focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
+                    Get Started
+                  </button>
+                </SignUpButton>
 
-              <SignInButton mode="modal">
-                <button className="text-sm font-semibold leading-6 text-gray-200 hover:text-yellow-400 transition">
-                  Sign In <span aria-hidden="true">→</span>
-                </button>
-              </SignInButton>
+                <SignInButton mode="modal">
+                  <button className="text-sm font-semibold leading-6 text-gray-200 hover:text-yellow-400 transition">
+                    Sign In <span aria-hidden="true">→</span>
+                  </button>
+                </SignInButton>
+              </SignedOut>
             </div>
           </div>
         </section>
