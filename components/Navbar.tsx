@@ -1,4 +1,10 @@
-import { UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import {
+  UserButton,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -7,7 +13,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo / Brand */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <Link
               href="/"
               className="text-2xl font-extrabold text-yellow-400 tracking-tight hover:text-yellow-300 transition"
@@ -19,29 +25,34 @@ const Navbar = () => {
           {/* Navigation / Auth */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-4">
-              {/* Sign In */}
-              <SignInButton mode="modal">
-                <button className="text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition">
-                  Sign in
-                </button>
-              </SignInButton>
+              {/* Show auth buttons only when signed out; show user menu when signed in */}
+              <SignedOut>
+                {/* Sign In */}
+                <SignInButton mode="modal">
+                  <button className="text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition">
+                    Sign in
+                  </button>
+                </SignInButton>
 
-              {/* Sign Up */}
-              <SignUpButton mode="modal">
-                <button className="bg-yellow-400 text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-yellow-300 shadow-md transition">
-                  Sign up
-                </button>
-              </SignUpButton>
+                {/* Sign Up */}
+                <SignUpButton mode="modal">
+                  <button className="bg-yellow-400 text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-yellow-300 shadow-md transition">
+                    Sign up
+                  </button>
+                </SignUpButton>
+              </SignedOut>
 
-              {/* User Menu */}
-              <UserButton
-                afterSignOutUrl="/"
-                appearance={{
-                  elements: {
-                    userButtonAvatarBox: "ring-2 ring-yellow-400",
-                  },
-                }}
-              />
+              <SignedIn>
+                {/* User Menu */}
+                <UserButton
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      userButtonAvatarBox: "ring-2 ring-yellow-400",
+                    },
+                  }}
+                />
+              </SignedIn>
             </div>
           </div>
         </div>
