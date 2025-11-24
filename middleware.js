@@ -13,10 +13,7 @@ export default clerkMiddleware(async (auth, req) => {
       const user = await client.users.getUser(userId);
       const email = user.emailAddresses?.[0]?.emailAddress;
       
-      // Debug log
-      console.log('User ID:', userId);
-      console.log('Email from Clerk:', email);
-      console.log('Email check:', email?.toLowerCase().endsWith('@sahyadri.edu.in'));
+      
       
       // Block anyone without @sahyadri.edu.in email
       if (!email || !email.toLowerCase().endsWith('@sahyadri.edu.in')) {
