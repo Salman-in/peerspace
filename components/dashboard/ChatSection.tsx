@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Send } from 'lucide-react';
+import { ArrowUp, Users } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -15,7 +15,6 @@ const ChatSection = () => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    // Load initial messages on the client side only
     setMessages([
       {
         id: '1',
@@ -37,7 +36,7 @@ const ChatSection = () => {
     if (message.trim()) {
       const newMessage: Message = {
         id: Date.now().toString(),
-        user: 'You', // Will be replaced with actual Clerk user later
+        user: 'You',
         content: message,
         timestamp: new Date(),
       };
@@ -47,22 +46,33 @@ const ChatSection = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen bg-black text-gray-200 border-l border-yellow-500/10">
+    <div className="flex-1 flex flex-col h-screen bg-[#0f0f0f]">
       {/* Chat Header */}
-      <div className="p-4 border-b border-yellow-500/20 bg-gray-900 flex items-center justify-between">
-        <h2 className="text-lg font-bold text-yellow-400 tracking-wide">
-          General Chat
-        </h2>
-        <span className="text-xs text-gray-400 italic">Active now</span>
+      <div className="p-5 border-b border-[#2a2a2a]">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-[#2a2a2a] rounded-md">
+              <Users className="h-5 w-5 text-[#d4a574]" />
+            </div>
+            <div>
+              <h2 className="text-lg font-medium text-[#e8e8e8]">General Chat</h2>
+              <p className="text-xs text-[#8e8e8e]">Community Discussion</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-[#4ade80] rounded-full"></div>
+            <span className="text-xs text-[#8e8e8e]">Active now</span>
+          </div>
+        </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-5 scrollbar-thin scrollbar-thumb-yellow-500/20 scrollbar-track-transparent">
+      <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {messages.map((msg) => (
-          <div key={msg.id} className="flex flex-col">
+          <div key={msg.id} className="flex flex-col space-y-1">
             <div className="flex items-baseline space-x-2">
-              <span className="font-semibold text-yellow-400">{msg.user}</span>
-              <span className="text-xs text-gray-500">
+              <span className="font-medium text-[#d4a574] text-sm">{msg.user}</span>
+              <span className="text-xs text-[#6e6e6e]">
                 {msg.timestamp.toLocaleTimeString('en-US', {
                   hour: 'numeric',
                   minute: 'numeric',
@@ -70,9 +80,9 @@ const ChatSection = () => {
                 })}
               </span>
             </div>
-            <p className="mt-1 text-gray-300 bg-gray-800 rounded-lg px-4 py-2 w-fit max-w-[80%] shadow-md border border-yellow-500/10">
-              {msg.content}
-            </p>
+            <div className="bg-[#1a1a1a] rounded-md px-4 py-3 w-fit max-w-[80%] border border-[#2a2a2a]">
+              <p className="text-[#e8e8e8] text-sm">{msg.content}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -80,21 +90,22 @@ const ChatSection = () => {
       {/* Message Input */}
       <form
         onSubmit={handleSendMessage}
-        className="p-4 border-t border-yellow-500/20 bg-gray-900"
+        className="p-4 border-t border-[#2a2a2a]"
       >
-        <div className="flex space-x-3">
+        <div className="relative">
           <input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 rounded-lg border border-yellow-500/30 bg-black text-gray-200 px-4 py-2 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full px-4 py-3 pr-12 rounded-md border border-[#3a3a3a] bg-[#1a1a1a] text-[#e8e8e8] placeholder-[#6e6e6e] focus:outline-none focus:ring-1 focus:ring-[#d4a574] focus:border-[#d4a574] transition text-sm"
           />
           <button
             type="submit"
-            className="bg-yellow-400 text-black rounded-lg px-4 py-2 hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition shadow-md"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-[#d4a574] text-[#1a1a1a] rounded-md hover:bg-[#c49564] focus:outline-none transition disabled:opacity-50"
+            disabled={!message.trim()}
           >
-            <Send className="h-5 w-5" />
+            <ArrowUp className="h-4 w-4" />
           </button>
         </div>
       </form>
