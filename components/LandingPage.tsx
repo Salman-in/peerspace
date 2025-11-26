@@ -2,6 +2,7 @@
 
 import { SignInButton, SignUpButton, SignedOut, SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
+import { MessageSquare, Bot, MapPin } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -45,7 +46,7 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section className="mx-auto mt-16 sm:mt-28 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto mt-4 sm:mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center px-4">
             <h2 className="text-sm sm:text-base font-medium leading-7 text-[#d4a574] uppercase tracking-wide">
               Everything You Need
@@ -62,37 +63,43 @@ export default function LandingPage() {
           <div className="mt-12 sm:mt-16 grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {/* Box 1 */}
             <div className="flex flex-col items-center text-center p-6 sm:p-8 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg hover:border-[#d4a574]/30 transition-all">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🤝</div>
+              <div className="p-3 bg-[#2a2a2a] rounded-lg mb-3 sm:mb-4">
+                <MessageSquare className="h-8 w-8 text-[#d4a574]" />
+              </div>
               <h3 className="text-lg sm:text-xl font-medium text-[#e8e8e8] mb-2 sm:mb-3">
-                Connect with Peers
+                Community Chat
               </h3>
               <p className="text-[#8e8e8e] text-sm sm:text-base">
-                Discover and connect with students who share your passions, 
-                courses, and goals — all within your campus network.
+                Connect with your classmates in real-time. Share ideas, 
+                ask questions, and build meaningful relationships.
               </p>
             </div>
 
             {/* Box 2 */}
             <div className="flex flex-col items-center text-center p-6 sm:p-8 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg hover:border-[#d4a574]/30 transition-all">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">📚</div>
+              <div className="p-3 bg-[#2a2a2a] rounded-lg mb-3 sm:mb-4">
+                <Bot className="h-8 w-8 text-[#d4a574]" />
+              </div>
               <h3 className="text-lg sm:text-xl font-medium text-[#e8e8e8] mb-2 sm:mb-3">
-                Share Resources
+                PeerAI Assistant
               </h3>
               <p className="text-[#8e8e8e] text-sm sm:text-base">
-                Exchange notes, study materials, and valuable insights to support 
-                each other's learning journey.
+                Get instant answers about your college, departments, facilities, 
+                and more with our AI-powered assistant.
               </p>
             </div>
 
             {/* Box 3 */}
             <div className="flex flex-col items-center text-center p-6 sm:p-8 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg hover:border-[#d4a574]/30 transition-all sm:col-span-2 lg:col-span-1">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🎉</div>
+              <div className="p-3 bg-[#2a2a2a] rounded-lg mb-3 sm:mb-4">
+                <MapPin className="h-8 w-8 text-[#d4a574]" />
+              </div>
               <h3 className="text-lg sm:text-xl font-medium text-[#e8e8e8] mb-2 sm:mb-3">
-                Stay in the Loop
+                Campus Navigation
               </h3>
               <p className="text-[#8e8e8e] text-sm sm:text-base">
-                Keep track of campus happenings — from academic sessions 
-                to club events and exciting new opportunities.
+                Find department locations, labs, seminar halls, and facilities 
+                across your campus with ease.
               </p>
             </div>
           </div>
