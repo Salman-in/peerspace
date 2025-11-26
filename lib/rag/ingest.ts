@@ -79,9 +79,6 @@ async function ingest() {
     chunkOverlap: 200,
   });
 
-  const textDocs = await splitter.createDocuments([rawText]);
-  docs.push(...textDocs);
-
   // Split all documents
   const splitDocs = await splitter.splitDocuments(docs);
 
