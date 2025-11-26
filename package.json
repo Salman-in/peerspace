@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ingest": "tsx lib/rag/ingest.ts",
+    "reset-db": "tsx lib/rag/reset.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.34.1",
@@ -14,12 +16,15 @@
     "@langchain/community": "^1.0.4",
     "@langchain/core": "^1.0.6",
     "@langchain/google-genai": "^1.0.3",
+    "cheerio": "^1.1.0",
     "chromadb": "^3.1.5",
     "langchain": "^1.0.6",
     "lucide-react": "^0.552.0",
     "next": "16.0.1",
+    "pdf-parse": "^1.1.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -29,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
     "tailwindcss": "^4",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   }
 }
