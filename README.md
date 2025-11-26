@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, start ChromaDB (required for RAG functionality):
+
+```bash
+docker run -d -p 8000:8000 --name chromadb chromadb/chroma
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
