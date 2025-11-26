@@ -2,7 +2,7 @@
 
 import { UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
-import { Home, MessageSquare, Bot, Info, Settings } from 'lucide-react';
+import { Home, MessageSquare, Bot, History, Settings } from 'lucide-react';
 
 const Sidebar = () => {
   return (
@@ -24,7 +24,7 @@ const Sidebar = () => {
         {[
           { href: '/dashboard', icon: Home, label: 'Home' },
           { href: '/dashboard/my-posts', icon: MessageSquare, label: 'My Posts' },
-          { href: '/dashboard/about', icon: Info, label: 'About Us' },
+          { href: '/dashboard/ai-history', icon: History, label: 'AI History' },
           { href: '/dashboard/settings', icon: Settings, label: 'Settings' },
         ].map(({ href, icon: Icon, label }) => (
           <Link
