@@ -73,7 +73,7 @@ const Sidebar = () => {
             <div className="text-sm font-medium text-[#e8e8e8] truncate">
               {user?.firstName || 'User'}
             </div>
-            <div className="text-xs text-[#6e6e6e]">View account</div>
+            <div className="text-xs text-[#6e6e6e] truncate">{user?.primaryEmailAddress?.emailAddress}</div>
           </div>
         </button>
 
