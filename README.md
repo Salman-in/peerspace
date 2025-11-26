@@ -1,42 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PeerSpace
+
+A college community interaction platform with AI-powered assistance using RAG (Retrieval-Augmented Generation).
+
+## Overview
+
+PeerSpace is a Next.js application that enables students to interact with an AI assistant (PeerAI) that can answer questions about their college using information from PDFs and websites. The platform uses ChromaDB for vector storage and Google's Gemini AI for natural language responses.
+
+## Features
+
+- **AI Chat Assistant (PeerAI)**: Ask questions about your college and get intelligent responses
+- **RAG Pipeline**: Retrieval-Augmented Generation for accurate, context-aware answers
+- **Multi-Source Ingestion**: Ingest data from PDFs and websites
+- **User Authentication**: Powered by Clerk
+- **Persistent Vector Storage**: ChromaDB with Docker for data persistence
+
+## Tech Stack
+
+- **Frontend**: Next.js 16, React 19, TailwindCSS
+- **AI/ML**: LangChain, Google Gemini AI, ChromaDB
+- **Authentication**: Clerk
+- **Vector Database**: ChromaDB (Docker)
+- **Language**: TypeScript
 
 ## Getting Started
 
-First, start ChromaDB (required for RAG functionality):
+### Prerequisites
 
+- Node.js 20+
+- Docker
+- npm/yarn/pnpm
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+GEMINI_API_KEY=your_gemini_api_key
+GOOGLE_API_KEY=your_google_api_key
+CHROMA_URL=http://localhost:8000
+```
+
+### Installation
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Start ChromaDB (required for RAG functionality):
 ```bash
 docker run -d -p 8000:8000 -v $(pwd)/chroma_data:/chroma/chroma --name chromadb chromadb/chroma
 ```
 
-Then, run the development server:
-
+3. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Data Ingestion
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Adding Content
 
-## Learn More
+1. **PDFs**: Place PDF files in `data/pdfs/` folder
+2. **URLs**: Add website URLs (one per line) in `data/urls.txt`
 
-To learn more about Next.js, take a look at the following resources:
+### Running Ingestion
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Ingest data into ChromaDB
+npm run ingest
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Reset database (clear all data)
+npm run reset-db
+```
 
-## Deploy on Vercel
+### Example
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Add PDFs
+cp college-handbook.pdf data/pdfs/
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Add URLs
+echo "https://sahyadri.edu.in" >> data/urls.txt
+echo "https://sosc.org.in" >> data/urls.txt
+
+# Ingest all data
+npm run ingest
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run ingest` - Ingest PDFs and URLs into ChromaDB
+- `npm run reset-db` - Clear ChromaDB collection
+
+## Docker Commands
+
+```bash
+# Start ChromaDB
+docker start chromadb
+
+# Stop ChromaDB
+docker stop chromadb
+
+# Remove container
+docker rm chromadb
+```
+
+## How It Works
+
+1. **Data Ingestion**: PDFs and web pages are scraped, chunked, and embedded using Google Gemini embeddings
+2. **Vector Storage**: Embeddings are stored in ChromaDB for efficient similarity search
+3. **Query Processing**: User questions are embedded and matched against stored documents
+4. **Response Generation**: Relevant context is retrieved and passed to Gemini AI to generate natural responses
+
+## Contributing
+
+Feel free to submit issues and pull requests.
