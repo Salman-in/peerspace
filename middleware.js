@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
 
-  // If user is logged in, check their email domain
+  // If user is logged in
   if (userId) {
     try {
       // Get user details from Clerk
@@ -13,14 +13,16 @@ export default clerkMiddleware(async (auth, req) => {
       const user = await client.users.getUser(userId);
       const email = user.emailAddresses?.[0]?.emailAddress;
       
-      
-      
       // Block anyone without @sahyadri.edu.in email
       if (!email || !email.toLowerCase().endsWith('@sahyadri.edu.in')) {
         // Allow only the unauthorized page
         if (!req.nextUrl.pathname.startsWith('/unauthorized')) {
-          console.log('Redirecting to unauthorized page');
           return NextResponse.redirect(new URL('/unauthorized', req.url));
+        }
+      } else {
+        // Redirect authenticated users from landing page to dashboard
+        if (req.nextUrl.pathname === '/') {
+          return NextResponse.redirect(new URL('/dashboard', req.url));
         }
       }
     } catch (error) {
