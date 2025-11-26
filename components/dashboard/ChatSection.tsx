@@ -1,114 +1,154 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowUp, Users } from 'lucide-react';
+import { Send, Heart, MessageCircle, Trash2 } from 'lucide-react';
+import { useUser } from '@clerk/nextjs';
 
-interface Message {
+interface Post {
   id: string;
-  user: string;
+  userId: string;
+  userName: string;
   content: string;
-  timestamp: Date;
+  timestamp: string;
+  likes: number;
 }
 
 const ChatSection = () => {
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [content, setContent] = useState('');
+  const [posts, setPosts] = useState<Post[]>([]);
+  const { user } = useUser();
 
   useEffect(() => {
-    setMessages([
-      {
-        id: '1',
-        user: 'John Doe',
-        content: 'Hello everyone! Anyone up for study group?',
-        timestamp: new Date(),
-      },
-      {
-        id: '2',
-        user: 'Jane Smith',
-        content: "I'm interested! What subject are you studying?",
-        timestamp: new Date(),
-      },
-    ]);
+    fetchPosts();
   }, []);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const fetchPosts = async () => {
+    try {
+      const res = await fetch('/api/posts');
+      const data = await res.json();
+      setPosts(data.posts || []);
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
+    }
+  };
+
+  const handleDeletePost = async (postId: string) => {
+    if (!confirm('Are you sure you want to delete this post?')) return;
+
+    try {
+      const res = await fetch(`/api/posts?id=${postId}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        fetchPosts();
+      }
+    } catch (error) {
+      console.error('Failed to delete post:', error);
+    }
+  };
+
+  const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim()) {
-      const newMessage: Message = {
-        id: Date.now().toString(),
-        user: 'You',
-        content: message,
-        timestamp: new Date(),
-      };
-      setMessages([...messages, newMessage]);
-      setMessage('');
+    if (!content.trim()) return;
+
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content,
+          userName: user?.firstName || user?.username || 'Anonymous',
+        }),
+      });
+
+      if (res.ok) {
+        setContent('');
+        fetchPosts();
+      }
+    } catch (error) {
+      console.error('Failed to create post:', error);
     }
   };
 
   return (
     <div className="flex-1 flex flex-col h-screen bg-[#0f0f0f]">
-      {/* Chat Header */}
       <div className="p-5 border-b border-[#2a2a2a]">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-[#2a2a2a] rounded-md">
-              <Users className="h-5 w-5 text-[#d4a574]" />
-            </div>
-            <div>
-              <h2 className="text-lg font-medium text-[#e8e8e8]">General Chat</h2>
-              <p className="text-xs text-[#8e8e8e]">Community Discussion</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-[#4ade80] rounded-full"></div>
-            <span className="text-xs text-[#8e8e8e]">Active now</span>
-          </div>
-        </div>
+        <h2 className="text-lg font-medium text-[#e8e8e8]">Community Feed</h2>
+        <p className="text-xs text-[#8e8e8e]">Share your thoughts with the community</p>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
-        {messages.map((msg) => (
-          <div key={msg.id} className="flex flex-col space-y-1">
-            <div className="flex items-baseline space-x-2">
-              <span className="font-medium text-[#d4a574] text-sm">{msg.user}</span>
-              <span className="text-xs text-[#6e6e6e]">
-                {msg.timestamp.toLocaleTimeString('en-US', {
-                  hour: 'numeric',
-                  minute: 'numeric',
-                  hour12: true,
-                })}
-              </span>
-            </div>
-            <div className="bg-[#1a1a1a] rounded-md px-4 py-3 w-fit max-w-[80%] border border-[#2a2a2a]">
-              <p className="text-[#e8e8e8] text-sm">{msg.content}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Message Input */}
-      <form
-        onSubmit={handleSendMessage}
-        className="p-4 border-t border-[#2a2a2a]"
-      >
-        <div className="relative">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message..."
-            className="w-full px-4 py-3 pr-12 rounded-md border border-[#3a3a3a] bg-[#1a1a1a] text-[#e8e8e8] placeholder-[#6e6e6e] focus:outline-none focus:ring-1 focus:ring-[#d4a574] focus:border-[#d4a574] transition text-sm"
-          />
+      {/* Create Post */}
+      <form onSubmit={handleCreatePost} className="p-4 border-b border-[#2a2a2a]">
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="What's on your mind?"
+          className="w-full px-4 py-3 rounded-md border border-[#3a3a3a] bg-[#1a1a1a] text-[#e8e8e8] placeholder-[#6e6e6e] focus:outline-none focus:ring-1 focus:ring-[#d4a574] focus:border-[#d4a574] transition text-sm resize-none"
+          rows={3}
+        />
+        <div className="flex justify-end mt-2">
           <button
             type="submit"
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-[#d4a574] text-[#1a1a1a] rounded-md hover:bg-[#c49564] focus:outline-none transition disabled:opacity-50"
-            disabled={!message.trim()}
+            className="px-4 py-2 bg-[#d4a574] text-[#1a1a1a] rounded-md hover:bg-[#c49564] focus:outline-none transition disabled:opacity-50 text-sm font-medium flex items-center space-x-2"
+            disabled={!content.trim()}
           >
-            <ArrowUp className="h-4 w-4" />
+            <Send className="h-4 w-4" />
+            <span>Post</span>
           </button>
         </div>
       </form>
+
+      {/* Posts Feed */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {posts.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-[#8e8e8e] text-sm">No posts yet. Be the first to share!</p>
+          </div>
+        ) : (
+          posts.map((post) => (
+            <div key={post.id} className="bg-[#1a1a1a] rounded-md p-4 border border-[#2a2a2a]">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-[#d4a574] rounded-full flex items-center justify-center text-[#1a1a1a] font-medium text-sm">
+                    {post.userName.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="font-medium text-[#e8e8e8] text-sm">{post.userName}</p>
+                    <p className="text-xs text-[#6e6e6e]">
+                      {new Date(post.timestamp).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                      })}
+                    </p>
+                  </div>
+                </div>
+                {post.userId === user?.id && (
+                  <button
+                    onClick={() => handleDeletePost(post.id)}
+                    className="text-[#8e8e8e] hover:text-red-500 transition"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+              <p className="text-[#e8e8e8] text-sm mb-3 whitespace-pre-wrap">{post.content}</p>
+              <div className="flex items-center space-x-4 text-[#8e8e8e]">
+                <button className="flex items-center space-x-1 hover:text-[#d4a574] transition text-xs">
+                  <Heart className="h-4 w-4" />
+                  <span>{post.likes}</span>
+                </button>
+                <button className="flex items-center space-x-1 hover:text-[#d4a574] transition text-xs">
+                  <MessageCircle className="h-4 w-4" />
+                  <span>Reply</span>
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };
