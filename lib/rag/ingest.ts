@@ -60,13 +60,19 @@ async function ingest() {
     }
   }
 
-  // Ingest raw text
-  const rawText = `
-  PeerSpace is a college community interaction platform.
-  Students can discuss, post and everything.
-  Sahydri is a college located in Mangalore, India.
-  Full name is Sahydri College of Engineering and Management.
-  `;
+  // Ingest custom text files
+  const dataFolder = path.join(process.cwd(), "data");
+  if (fs.existsSync(dataFolder)) {
+    const textFiles = fs.readdirSync(dataFolder).filter(f => f.endsWith(".txt") && f !== "urls.txt");
+    for (const file of textFiles) {
+      console.log(`Ingesting text file: ${file}`);
+      const content = fs.readFileSync(path.join(dataFolder, file), "utf-8");
+      docs.push({
+        pageContent: content,
+        metadata: { source: file }
+      });
+    }
+  }
 
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 1000,
