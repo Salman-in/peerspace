@@ -9,14 +9,14 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="bg-black/90 backdrop-blur-md border-b border-yellow-500/20 fixed w-full top-0 z-50">
+    <nav className="bg-[#1a1a1a]/80 backdrop-blur-md border-b border-[#2a2a2a] fixed w-full top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo / Brand */}
           <div className="shrink-0">
             <Link
               href="/"
-              className="text-2xl font-extrabold text-yellow-400 tracking-tight hover:text-yellow-300 transition"
+              className="text-2xl font-medium text-[#e8e8e8] tracking-tight hover:text-[#d4a574] transition"
             >
               PeerSpace
             </Link>
@@ -25,33 +25,22 @@ const Navbar = () => {
           {/* Navigation / Auth */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-4">
-              {/* Show auth buttons only when signed out; show user menu when signed in */}
               <SignedOut>
-                {/* Sign In */}
                 <SignInButton mode="modal">
-                  <button className="text-gray-300 hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition">
+                  <button className="text-[#8e8e8e] hover:text-[#e8e8e8] px-3 py-2 rounded-md text-sm font-medium transition">
                     Sign in
                   </button>
                 </SignInButton>
 
-                {/* Sign Up */}
                 <SignUpButton mode="modal">
-                  <button className="bg-yellow-400 text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-yellow-300 shadow-md transition">
+                  <button className="bg-[#d4a574] text-[#1a1a1a] px-4 py-2 rounded-md text-sm font-medium hover:bg-[#c49564] transition">
                     Sign up
                   </button>
                 </SignUpButton>
               </SignedOut>
 
               <SignedIn>
-                {/* User Menu */}
-                <UserButton
-                  afterSignOutUrl="/"
-                  appearance={{
-                    elements: {
-                      userButtonAvatarBox: "ring-2 ring-yellow-400",
-                    },
-                  }}
-                />
+                <UserButton afterSignOutUrl="/" />
               </SignedIn>
             </div>
           </div>

@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <footer className="bg-black text-gray-400 border-t border-yellow-500/10">
+    <footer className="bg-[#1a1a1a] text-[#8e8e8e] border-t border-[#2a2a2a]">
       <p className="text-xs text-center py-4">
-        © 2025 <span className="text-yellow-400 font-medium">PeerSpace</span>. All rights reserved.
+        © 2025 <span className="text-[#d4a574] font-medium">PeerSpace</span>. All rights reserved.
       </p>
     </footer>
   );
