@@ -1,8 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Send, Heart, MessageCircle, Trash2 } from 'lucide-react';
+import { Send, MessageCircle, Trash2 } from 'lucide-react';
 import { useUser } from '@clerk/nextjs';
+
+interface Reply {
+  id: string;
+  userId: string;
+  userName: string;
+  content: string;
+  timestamp: string;
+}
 
 interface Post {
   id: string;
@@ -10,12 +18,14 @@ interface Post {
   userName: string;
   content: string;
   timestamp: string;
-  likes: number;
+  replies: Reply[];
 }
 
 const ChatSection = () => {
   const [content, setContent] = useState('');
   const [posts, setPosts] = useState<Post[]>([]);
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyContent, setReplyContent] = useState('');
   const { user } = useUser();
 
   useEffect(() => {
@@ -68,6 +78,30 @@ const ChatSection = () => {
       }
     } catch (error) {
       console.error('Failed to create post:', error);
+    }
+  };
+
+  const handleReply = async (postId: string) => {
+    if (!replyContent.trim()) return;
+
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          postId,
+          content: replyContent,
+          userName: user?.firstName || user?.username || 'Anonymous',
+        }),
+      });
+
+      if (res.ok) {
+        setReplyContent('');
+        setReplyingTo(null);
+        fetchPosts();
+      }
+    } catch (error) {
+      console.error('Failed to add reply:', error);
     }
   };
 
@@ -136,15 +170,76 @@ const ChatSection = () => {
               </div>
               <p className="text-[#e8e8e8] text-sm mb-3 whitespace-pre-wrap">{post.content}</p>
               <div className="flex items-center space-x-4 text-[#8e8e8e]">
-                <button className="flex items-center space-x-1 hover:text-[#d4a574] transition text-xs">
-                  <Heart className="h-4 w-4" />
-                  <span>{post.likes}</span>
-                </button>
-                <button className="flex items-center space-x-1 hover:text-[#d4a574] transition text-xs">
+                <button 
+                  onClick={() => setReplyingTo(replyingTo === post.id ? null : post.id)}
+                  className="flex items-center space-x-1 hover:text-[#d4a574] transition text-xs"
+                >
                   <MessageCircle className="h-4 w-4" />
-                  <span>Reply</span>
+                  <span>{post.replies.length > 0 ? post.replies.length : 'Reply'}</span>
                 </button>
               </div>
+
+              {/* Replies */}
+              {post.replies.length > 0 && (
+                <div className="mt-3 pt-3 border-t border-[#2a2a2a] space-y-2">
+                  {post.replies.map((reply) => (
+                    <div key={reply.id} className="flex space-x-2">
+                      <div className="w-6 h-6 bg-[#d4a574] rounded-full flex items-center justify-center text-[#1a1a1a] font-medium text-xs shrink-0">
+                        {reply.userName.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2">
+                          <p className="font-medium text-[#e8e8e8] text-xs">{reply.userName}</p>
+                          <p className="text-xs text-[#6e6e6e]">
+                            {new Date(reply.timestamp).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              hour: 'numeric',
+                              minute: 'numeric',
+                            })}
+                          </p>
+                        </div>
+                        <p className="text-[#e8e8e8] text-xs mt-1">{reply.content}</p>
+                        <button
+                          onClick={() => setReplyingTo(replyingTo === post.id ? null : post.id)}
+                          className="flex items-center space-x-1 text-[#8e8e8e] hover:text-[#d4a574] transition text-xs mt-1"
+                        >
+                          <MessageCircle className="h-3 w-3" />
+                          <span>Reply</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Reply Input */}
+              {replyingTo === post.id && (
+                <div className="mt-3 pt-3 border-t border-[#2a2a2a]">
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      value={replyContent}
+                      onChange={(e) => setReplyContent(e.target.value)}
+                      placeholder="Write a reply..."
+                      className="flex-1 px-3 py-2 rounded-md border border-[#3a3a3a] bg-[#0f0f0f] text-[#e8e8e8] placeholder-[#6e6e6e] focus:outline-none focus:ring-1 focus:ring-[#d4a574] focus:border-[#d4a574] transition text-xs"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleReply(post.id);
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() => handleReply(post.id)}
+                      disabled={!replyContent.trim()}
+                      className="px-3 py-2 bg-[#d4a574] text-[#1a1a1a] rounded-md hover:bg-[#c49564] focus:outline-none transition disabled:opacity-50 text-xs font-medium"
+                    >
+                      <Send className="h-3 w-3" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))
         )}

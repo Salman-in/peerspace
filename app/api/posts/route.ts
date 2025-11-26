@@ -1,13 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
+interface Reply {
+  id: string;
+  userId: string;
+  userName: string;
+  content: string;
+  timestamp: string;
+}
+
 interface Post {
   id: string;
   userId: string;
   userName: string;
   content: string;
   timestamp: string;
-  likes: number;
+  replies: Reply[];
 }
 
 let posts: Post[] = [];
@@ -38,7 +46,7 @@ export async function POST(req: NextRequest) {
       userName: userName || 'Anonymous',
       content: content.trim(),
       timestamp: new Date().toISOString(),
-      likes: 0,
+      replies: [],
     };
 
     posts.unshift(newPost);
@@ -83,5 +91,41 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const { userId } = await auth();
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { postId, content, userName } = await req.json();
+
+    if (!postId || !content || !content.trim()) {
+      return NextResponse.json({ error: 'Post ID and content required' }, { status: 400 });
+    }
+
+    const post = posts.find(p => p.id === postId);
+    
+    if (!post) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    }
+
+    const newReply: Reply = {
+      id: Date.now().toString(),
+      userId,
+      userName: userName || 'Anonymous',
+      content: content.trim(),
+      timestamp: new Date().toISOString(),
+    };
+
+    post.replies.push(newReply);
+
+    return NextResponse.json({ reply: newReply });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to add reply' }, { status: 500 });
   }
 }
