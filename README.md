@@ -85,8 +85,7 @@ npm run reset-db
 cp college-handbook.pdf data/pdfs/
 
 # Add URLs
-echo "https://sahyadri.edu.in" >> data/urls.txt
-echo "https://sosc.org.in" >> data/urls.txt
+echo "example.com" >> data/urls.txt
 
 # Ingest all data
 npm run ingest
