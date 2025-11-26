@@ -46,3 +46,7 @@ next-env.d.ts
 
 # chromadb data
 /chroma_data
+
+# college data (sensitive information)
+data/pdfs/
+data/*.txt
