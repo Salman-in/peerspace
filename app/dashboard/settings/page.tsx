@@ -1,12 +1,33 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { User, Bell, Shield, LogOut } from 'lucide-react';
+import { User, Bell, Shield, LogOut, Database } from 'lucide-react';
 import { useClerk } from '@clerk/nextjs';
+import { useState } from 'react';
 
 export default function SettingsPage() {
   const { user } = useUser();
   const { signOut } = useClerk();
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<string | null>(null);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    setSyncResult(null);
+    try {
+      const response = await fetch('/api/sync', { method: 'POST' });
+      const data = await response.json();
+      if (response.ok) {
+        setSyncResult(`✓ Synced ${data.synced} posts (${data.chunks} chunks) to RAG system`);
+      } else {
+        setSyncResult(`✗ ${data.error}`);
+      }
+    } catch (error) {
+      setSyncResult('✗ Failed to sync posts');
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   return (
     <div className="flex-1 h-screen bg-[#0f0f0f] overflow-y-auto">
@@ -90,6 +111,31 @@ export default function SettingsPage() {
                 </div>
                 <input type="checkbox" className="w-4 h-4" defaultChecked />
               </div>
+            </div>
+          </div>
+
+          {/* RAG Sync Section */}
+          <div className="bg-[#1a1a1a] rounded-md border border-[#2a2a2a] p-6">
+            <div className="flex items-center space-x-3 mb-4">
+              <Database className="h-5 w-5 text-[#d4a574]" />
+              <h2 className="text-lg font-medium text-[#e8e8e8]">RAG System</h2>
+            </div>
+            <div className="space-y-3">
+              <p className="text-sm text-[#8e8e8e]">
+                Sync community posts to the AI knowledge base. This allows PeerAI to answer questions based on community discussions.
+              </p>
+              <button
+                onClick={handleSync}
+                disabled={syncing}
+                className="w-full px-4 py-2 bg-[#d4a574] text-[#1a1a1a] rounded-md hover:bg-[#c49564] transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {syncing ? 'Syncing...' : 'Sync Posts to RAG'}
+              </button>
+              {syncResult && (
+                <p className={`text-xs ${syncResult.startsWith('✓') ? 'text-green-500' : 'text-red-500'}`}>
+                  {syncResult}
+                </p>
+              )}
             </div>
           </div>
 

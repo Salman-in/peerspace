@@ -141,9 +141,20 @@ docker-compose up -d chromadb
 1. **Data Ingestion**: PDFs and web pages are scraped, chunked, and embedded using Google Gemini embeddings
 2. **Vector Storage**: Embeddings are stored in ChromaDB for efficient similarity search
 3. **Data Persistence**: User posts and AI conversation history are stored in MongoDB
-4. **Query Processing**: User questions are embedded and matched against stored documents
-5. **Response Generation**: Relevant context is retrieved and passed to Gemini AI to generate natural responses
-6. **History Tracking**: All AI conversations are automatically saved to MongoDB for each user
+4. **Community Knowledge**: Users can sync community posts to the RAG system via Settings page
+5. **Query Processing**: User questions are embedded and matched against stored documents
+6. **Response Generation**: Relevant context is retrieved and passed to Gemini AI to generate natural responses
+7. **History Tracking**: All AI conversations are automatically saved to MongoDB for each user
+
+## Syncing Community Posts to RAG
+
+To make PeerAI answer questions based on community discussions:
+
+1. Go to **Dashboard → Settings**
+2. Scroll to the **RAG System** section
+3. Click **Sync Posts to RAG** button
+4. All community posts and replies will be indexed into the AI knowledge base
+5. PeerAI can now answer questions using community-generated content
 
 ## Contributing
 

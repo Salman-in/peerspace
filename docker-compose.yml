@@ -22,6 +22,8 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
+    environment:
+      - CHROMA_SERVER_CORS_ALLOW_ORIGINS=["*"]
     volumes:
       - ./chroma_data:/chroma/chroma
     networks:
