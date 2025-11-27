@@ -1,29 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-
-interface Reply {
-  id: string;
-  userId: string;
-  userName: string;
-  content: string;
-  timestamp: string;
-}
-
-interface Post {
-  id: string;
-  userId: string;
-  userName: string;
-  content: string;
-  timestamp: string;
-  replies: Reply[];
-}
-
-let posts: Post[] = [];
+import clientPromise from '@/lib/mongodb';
+import { Post, Reply } from '@/lib/models';
 
 export async function GET() {
-  return NextResponse.json({ posts: posts.sort((a, b) => 
-    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-  )});
+  try {
+    const client = await clientPromise;
+    const db = client.db('peerspace');
+    const posts = await db.collection<Post>('posts')
+      .find({})
+      .sort({ timestamp: -1 })
+      .toArray();
+    
+    return NextResponse.json({ posts });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -49,11 +41,9 @@ export async function POST(req: NextRequest) {
       replies: [],
     };
 
-    posts.unshift(newPost);
-
-    if (posts.length > 100) {
-      posts = posts.slice(0, 100);
-    }
+    const client = await clientPromise;
+    const db = client.db('peerspace');
+    await db.collection<Post>('posts').insertOne(newPost);
 
     return NextResponse.json({ post: newPost });
   } catch (error) {
@@ -76,17 +66,20 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: 'Post ID required' }, { status: 400 });
     }
 
-    const postIndex = posts.findIndex(p => p.id === postId);
+    const client = await clientPromise;
+    const db = client.db('peerspace');
     
-    if (postIndex === -1) {
+    const post = await db.collection<Post>('posts').findOne({ id: postId });
+    
+    if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    if (posts[postIndex].userId !== userId) {
+    if (post.userId !== userId) {
       return NextResponse.json({ error: 'Unauthorized to delete this post' }, { status: 403 });
     }
 
-    posts.splice(postIndex, 1);
+    await db.collection<Post>('posts').deleteOne({ id: postId });
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -108,7 +101,10 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: 'Post ID and content required' }, { status: 400 });
     }
 
-    const post = posts.find(p => p.id === postId);
+    const client = await clientPromise;
+    const db = client.db('peerspace');
+    
+    const post = await db.collection<Post>('posts').findOne({ id: postId });
     
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
@@ -122,7 +118,10 @@ export async function PATCH(req: NextRequest) {
       timestamp: new Date().toISOString(),
     };
 
-    post.replies.push(newReply);
+    await db.collection<Post>('posts').updateOne(
+      { id: postId },
+      { $push: { replies: newReply } }
+    );
 
     return NextResponse.json({ reply: newReply });
   } catch (error) {

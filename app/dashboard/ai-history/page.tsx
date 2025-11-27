@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { Bot, User, Clock, Trash2 } from 'lucide-react';
 
 interface Conversation {
+  _id?: string;
   id: string;
+  userId: string;
   question: string;
   answer: string;
   timestamp: string;
@@ -17,15 +19,28 @@ export default function AIHistoryPage() {
     loadHistory();
   }, []);
 
-  const loadHistory = () => {
-    const history = JSON.parse(localStorage.getItem('aiHistory') || '[]');
-    setConversations(history);
+  const loadHistory = async () => {
+    try {
+      const response = await fetch('/api/conversations');
+      if (response.ok) {
+        const data = await response.json();
+        setConversations(data.conversations);
+      }
+    } catch (error) {
+      console.error('Failed to load conversations:', error);
+    }
   };
 
-  const clearHistory = () => {
+  const clearHistory = async () => {
     if (confirm('Are you sure you want to clear all AI conversation history?')) {
-      localStorage.removeItem('aiHistory');
-      setConversations([]);
+      try {
+        const response = await fetch('/api/conversations', { method: 'DELETE' });
+        if (response.ok) {
+          setConversations([]);
+        }
+      } catch (error) {
+        console.error('Failed to clear conversations:', error);
+      }
     }
   };
 

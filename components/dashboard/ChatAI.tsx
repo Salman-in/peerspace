@@ -31,17 +31,15 @@ const ChatAI = () => {
       const assistantMessage = { role: 'assistant' as const, content: data.answer };
       setMessages(prev => [...prev, assistantMessage]);
       
-      // Save to localStorage for now (will upgrade to db later)
-      const conversation = {
-        id: Date.now().toString(),
-        question: userMessage,
-        answer: data.answer,
-        timestamp: new Date().toISOString(),
-      };
-      
-      const history = JSON.parse(localStorage.getItem('aiHistory') || '[]');
-      history.unshift(conversation);
-      localStorage.setItem('aiHistory', JSON.stringify(history.slice(0, 50)));
+      // Save conversation to database
+      await fetch('/api/conversations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: userMessage,
+          answer: data.answer,
+        }),
+      });
     } catch (error) {
       setMessages(prev => [...prev, { role: 'assistant', content: "Error: Failed to get response" }]);
     } finally {

@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: peerspace-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: peerspace
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - peerspace-network
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: peerspace-chromadb
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./chroma_data:/chroma/chroma
+    networks:
+      - peerspace-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  peerspace-network:
+    driver: bridge

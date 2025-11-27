@@ -4,7 +4,7 @@ A college community interaction platform with AI-powered assistance using RAG (R
 
 ## Overview
 
-PeerSpace is a Next.js application that enables students to interact with an AI assistant (PeerAI) that can answer questions about their college using information from PDFs and websites. The platform uses ChromaDB for vector storage and Google's Gemini AI for natural language responses.
+PeerSpace is a Next.js application that enables students to interact with an AI assistant (PeerAI) that can answer questions about their college using information from PDFs and websites. The platform uses MongoDB for data persistence, ChromaDB for vector storage, and Google's Gemini AI for natural language responses.
 
 ## Features
 
@@ -12,14 +12,16 @@ PeerSpace is a Next.js application that enables students to interact with an AI 
 - **RAG Pipeline**: Retrieval-Augmented Generation for accurate, context-aware answers
 - **Multi-Source Ingestion**: Ingest data from PDFs and websites
 - **User Authentication**: Powered by Clerk
-- **Persistent Vector Storage**: ChromaDB with Docker for data persistence
+- **Persistent Data Storage**: MongoDB for posts and AI conversation history
+- **Vector Storage**: ChromaDB for document embeddings
 
 ## Tech Stack
 
 - **Frontend**: Next.js 16, React 19, TailwindCSS
+- **Backend**: MongoDB for data persistence
 - **AI/ML**: LangChain, Google Gemini AI, ChromaDB
 - **Authentication**: Clerk
-- **Vector Database**: ChromaDB (Docker)
+- **Databases**: MongoDB (user data), ChromaDB (vector storage)
 - **Language**: TypeScript
 
 ## Getting Started
@@ -39,6 +41,7 @@ NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
 GEMINI_API_KEY=your_gemini_api_key
 GOOGLE_API_KEY=your_google_api_key
+MONGODB_URI=mongodb://admin:password@localhost:27017/peerspace?authSource=admin
 CHROMA_URL=http://localhost:8000
 ```
 
@@ -49,9 +52,9 @@ CHROMA_URL=http://localhost:8000
 npm install
 ```
 
-2. Start ChromaDB (required for RAG functionality):
+2. Start MongoDB and ChromaDB using Docker Compose:
 ```bash
-docker run -d -p 8000:8000 -v $(pwd)/chroma_data:/chroma/chroma --name chromadb chromadb/chroma
+docker-compose up -d
 ```
 
 3. Run the development server:
@@ -60,6 +63,20 @@ npm run dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Database Setup
+
+The application uses two databases:
+
+- **MongoDB**: Stores user posts and AI conversation history
+  - Accessible at `mongodb://localhost:27017`
+  - Database: `peerspace`
+  - Collections: `posts`, `conversations`
+  - Default credentials: `admin:password`
+
+- **ChromaDB**: Stores document embeddings for RAG
+  - Accessible at `http://localhost:8000`
+  - Data persisted in `./chroma_data/` directory
 
 ## Data Ingestion
 
@@ -98,26 +115,35 @@ npm run ingest
 - `npm run start` - Start production server
 - `npm run ingest` - Ingest PDFs and URLs into ChromaDB
 - `npm run reset-db` - Clear ChromaDB collection
+- `npm run db:up` - Start MongoDB and ChromaDB containers
+- `npm run db:down` - Stop all database containers
+- `npm run db:logs` - View database container logs
 
 ## Docker Commands
 
 ```bash
-# Start ChromaDB
-docker start chromadb
+# Start all services (MongoDB + ChromaDB)
+docker-compose up -d
 
-# Stop ChromaDB
-docker stop chromadb
+# Stop all services
+docker-compose down
 
-# Remove container
-docker rm chromadb
+# View logs
+docker-compose logs
+
+# Start individual services
+docker-compose up -d mongodb
+docker-compose up -d chromadb
 ```
 
 ## How It Works
 
 1. **Data Ingestion**: PDFs and web pages are scraped, chunked, and embedded using Google Gemini embeddings
 2. **Vector Storage**: Embeddings are stored in ChromaDB for efficient similarity search
-3. **Query Processing**: User questions are embedded and matched against stored documents
-4. **Response Generation**: Relevant context is retrieved and passed to Gemini AI to generate natural responses
+3. **Data Persistence**: User posts and AI conversation history are stored in MongoDB
+4. **Query Processing**: User questions are embedded and matched against stored documents
+5. **Response Generation**: Relevant context is retrieved and passed to Gemini AI to generate natural responses
+6. **History Tracking**: All AI conversations are automatically saved to MongoDB for each user
 
 ## Contributing
 

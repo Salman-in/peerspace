@@ -44,8 +44,9 @@ next-env.d.ts
 # clerk configuration (can include secrets)
 /.clerk/
 
-# chromadb data
+# database data
 /chroma_data
+/mongodb_data
 
 # college data (sensitive information)
 data/pdfs/
