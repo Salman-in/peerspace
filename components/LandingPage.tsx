@@ -15,7 +15,7 @@ export default function LandingPage() {
               Connect. Collaborate. Grow.
             </h1>
             <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-[#8e8e8e] max-w-2xl mx-auto px-4">
-              Join <span className="font-medium text-[#d4a574]">PeerSpace</span> — 
+              Join <span className="font-medium text-[#d4a574]">PeerSpace</span>, 
               your digital campus hub for connecting with classmates, sharing resources, 
               and discovering exciting events around you.
             </p>
