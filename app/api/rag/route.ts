@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 const MAX_QUERY_LENGTH = 1000; // safeguard for excessively long queries
 
 export async function POST(req: Request) {
-  let body: any;
+  let body: { query?: string };
   try {
     body = await req.json();
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
@@ -22,24 +22,22 @@ export async function POST(req: Request) {
   }
 
   try {
-    // Basic timeout using Promise.race so we don't rely on passing AbortSignals into the runnable
+    // Increased timeout for LLM API calls
     const resultPromise = ragChain.invoke({ question: query });
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("RAG_TIMEOUT")), 25_000)
+      setTimeout(() => reject(new Error("RAG_TIMEOUT")), 60_000) // 60 seconds
     );
 
-    const result = await Promise.race([resultPromise, timeoutPromise]);
-
-    const r: any = result;
-    const answer = typeof result === "string" ? result : r?.content ?? r?.text ?? "";
+    const answer = await Promise.race([resultPromise, timeoutPromise]);
 
     return NextResponse.json({ answer }, { status: 200 });
-  } catch (err: any) {
-    if (err?.message === "RAG_TIMEOUT") {
+  } catch (err) {
+    const error = err as Error;
+    if (error?.message === "RAG_TIMEOUT") {
       return NextResponse.json({ error: "Request timed out" }, { status: 504 });
     }
 
-    console.error("RAG pipeline error:", err);
+    console.error("RAG pipeline error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

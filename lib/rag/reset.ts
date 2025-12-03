@@ -10,6 +10,7 @@ async function reset() {
     await client.deleteCollection({ name: "peerspace_rag" });
     console.log("Collection deleted successfully!");
   } catch (error) {
+    // console.error("Error deleting collection:", error);
     console.log("Collection doesn't exist or already deleted");
   }
 }

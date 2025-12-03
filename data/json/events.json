@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "name": "Synergia’25 National Innovation Fest",
+      "start_date": "2025-11-06",
+      "end_date": "2025-11-08",
+      "description": "National-level innovation festival with hackathon, aero-tech fest, robotics competitions and science talent hunt.",
+      "segments": [
+        "12th Sahyadri Science Talent Hunt (SSTH)",
+        "8th Devhost – 36-hour national-level hackathon (by Sahyadri Open Source Community)",
+        "Aerophilia – two-day aero-tech fest (Team Challengers)",
+        "Robotics competitions by Sahyadri Robotics Club (robo soccer, sumo battles, autonomous navigation)"
+      ],
+      "target_participants": "Students from Grade 8 to engineering level",
+      "expected_attendance": {
+        "institutions": 425,
+        "students": 20000
+      },
+      "specials": {
+        "seed_grant": "₹2,00,000 for selected teams (for SSTH)",
+        "mentorship": true,
+        "innovation_facility_access": true
+      }
+    },
+    {
+      "name": "COSMIC – 2025 (Second IEEE International Conference on Computing, Semiconductor, Mechatronics, Intelligent Systems and Communications)",
+      "start_date": "2025-11-21",
+      "end_date": "2025-11-22",
+      "description": "International conference for researchers, engineers and students in computing, semiconductor, mechatronics, intelligent systems and communications. Includes keynote sessions, paper/poster presentations.",
+      "paper_submission_deadline": "2025-07-31",
+      "hard_deadline_for_submission": "2025-08-12",
+      "acceptance_notification": "2025-09-15",
+      "registration_deadline": "2025-09-20",
+      "crc_submission_deadline": "2025-10-15"
+    },
+    {
+      "name": "Sahyadri Carnival 2025",
+      "start_date": "2025-05-23",
+      "end_date": "2025-05-24",
+      "description": "Flagship student-centric carnival by the Department of Business Administration featuring a job fair, management and cultural events.",
+      "activities": [
+        "Job Fair (50+ companies)",
+        "Market Verse",
+        "Student Corner",
+        "Sahyadri Whiz Quiz 2025",
+        "Management Fest",
+        "Faculty Development Programme (FDP)"
+      ],
+      "registered_students": 1000
+    },
+    {
+      "name": "Faculty Development Program on Innovation & Entrepreneurship",
+      "start_date": "2025-03-24",
+      "end_date": "2025-03-28",
+      "description": "5-day FDP (non-residential) aimed at faculty and incubation managers to build skills in innovation management, startup ecosystem, IP rights, and product development.",
+      "sponsored_by": ["Innovation Cell, Ministry of Education", "AICTE, Government of India"]
+    },
+    {
+      "name": "15th Graduation Day Ceremony — First Autonomous Batch (Engineering, 2025)",
+      "date": "2025-09-20",
+      "description": "Graduation day for first autonomous batch of BE students passed out in 2025. Awards and gold medals presented to top achievers.",
+      "chief_guest": "Dr. Raj Mohan C (Director, Kyndryl)",
+      "guest_of_honour": "Ms. Hiyori Takashima (Manager, Zenken Corporation)",
+      "principal": "Dr. S S Injaganeri",
+      "vice_principal": "Dr. Sudheer Shetty"
+    }
+  ]
+}

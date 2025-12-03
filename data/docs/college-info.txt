@@ -1,0 +1,25 @@
+# Sahyadri College Building Information
+
+## Department Locations
+- CSE (Computer Science and Engineering) department is located on the ground floor
+- AIML (Artificial Intelligence and Machine Learning) department is located on the 1st floor
+- ISE (Information Science and Engineering) department is located on the 2nd floor
+- Robotics and Mechanical department is located on the 4th floor
+
+## Lab Locations
+- CAD lab is located on the 5th floor
+- EC Lab (Electronics and Communication Lab) is located on the 5th floor
+
+## Facilities
+- Seminar halls are available on each floor, but only up to the 2nd floor
+- Washrooms are available on each floor
+- The lift is exclusively for faculty use only, students are not allowed to use it
+
+## Administrative Offices
+- The principal's office is currently under renovation
+- A temporary principal's office has been set up adjacent to the old principal's office
+- The temporary office is located near the GD (Group Discussion) room
+
+## Flagship events
+- Devhost, the flagship event is a remarkable tech convergence by Sahyadri Open Source Community (SOSC), is set to be an exhilarating experience with an exciting mix of technical and non-technical events. It seeks to equip participants with knowledge and skills, while encouraging curiosity and fostering innovation. With a variety of tech and non-tech battles and events featuring dev talks and workshops led by industry experts, it creates opportunities for both personal development and self-exploration. Join the 36-hour live hack event to bring your ideas to fruition, with challenges designed for every level of experience
+- synergia, 

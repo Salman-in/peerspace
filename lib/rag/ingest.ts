@@ -3,7 +3,6 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embeddings } from "./embeddings";
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
-
 import * as fs from "fs";
 import * as path from "path";
 
@@ -17,29 +16,38 @@ async function ingestURL(url: string) {
   const html = await response.text();
   const cheerio = await import("cheerio");
   const $ = cheerio.load(html);
-  
-  // Remove script, style, and other non-content tags
+
   $("script, style, nav, header, footer, iframe, noscript").remove();
-  
-  // Extract text from body
-  const text = $("body").text()
-    .replace(/\s+/g, " ")
-    .replace(/\n+/g, "\n")
-    .trim();
-  
-  return [{
-    pageContent: text,
-    metadata: { source: url }
-  }];
+  const text = $("body").text().replace(/\s+/g, " ").replace(/\n+/g, "\n").trim();
+
+  return [
+    {
+      pageContent: text,
+      metadata: { source: url },
+    },
+  ];
+}
+
+function extractContentFromJSON(entry: any): string | null {
+  if (typeof entry === "string") return entry;
+  if (typeof entry === "object") {
+    if (entry.content) return entry.content;
+    if (entry.body) return entry.body;
+    if (entry.text) return entry.text;
+    if (entry.message) return entry.message;
+    if (entry.description) return entry.description;
+    if (entry.answer) return entry.answer;
+  }
+  return null;
 }
 
 async function ingest() {
   const docs = [];
 
-  // Ingest PDFs from a folder
+  // PDFs
   const pdfFolder = path.join(process.cwd(), "data/pdfs");
   if (fs.existsSync(pdfFolder)) {
-    const pdfFiles = fs.readdirSync(pdfFolder).filter(f => f.endsWith(".pdf"));
+    const pdfFiles = fs.readdirSync(pdfFolder).filter((f) => f.endsWith(".pdf"));
     for (const file of pdfFiles) {
       console.log(`Ingesting PDF: ${file}`);
       const pdfDocs = await ingestPDF(path.join(pdfFolder, file));
@@ -47,12 +55,13 @@ async function ingest() {
     }
   }
 
-  // Ingest URLs from a file
+  // URLs
   const urlsFile = path.join(process.cwd(), "data/urls.txt");
   if (fs.existsSync(urlsFile)) {
-    const urls = fs.readFileSync(urlsFile, "utf-8")
+    const urls = fs
+      .readFileSync(urlsFile, "utf-8")
       .split("\n")
-      .filter(u => u.trim() && !u.startsWith("#"));
+      .filter((u) => u.trim() && !u.startsWith("#"));
     for (const url of urls) {
       console.log(`Ingesting URL: ${url}`);
       const urlDocs = await ingestURL(url);
@@ -60,32 +69,54 @@ async function ingest() {
     }
   }
 
-  // Ingest custom text files
-  const dataFolder = path.join(process.cwd(), "data");
-  if (fs.existsSync(dataFolder)) {
-    const textFiles = fs.readdirSync(dataFolder).filter(f => f.endsWith(".txt") && f !== "urls.txt");
-    for (const file of textFiles) {
-      console.log(`Ingesting text file: ${file}`);
-      const content = fs.readFileSync(path.join(dataFolder, file), "utf-8");
+  // .txt files
+  const textFolders = ["data", "data/docs"];
+  for (const folder of textFolders) {
+    const fullPath = path.join(process.cwd(), folder);
+    if (fs.existsSync(fullPath)) {
+      const textFiles = fs.readdirSync(fullPath).filter((f) => f.endsWith(".txt") && f !== "urls.txt");
+      for (const file of textFiles) {
+        console.log(`Ingesting text file: ${file}`);
+        const content = fs.readFileSync(path.join(fullPath, file), "utf-8");
+        docs.push({
+          pageContent: content,
+          metadata: { source: `${folder}/${file}` },
+        });
+      }
+    }
+  }
+
+  // JSON files (flexible structure)
+  const jsonFolder = path.join(process.cwd(), "data/json");
+  if (fs.existsSync(jsonFolder)) {
+    const jsonFiles = fs.readdirSync(jsonFolder).filter((f) => f.endsWith(".json"));
+    for (const file of jsonFiles) {
+      console.log(`Ingesting JSON file: ${file}`);
+      const raw = fs.readFileSync(path.join(jsonFolder, file), "utf-8");
+      const data = JSON.parse(raw);
+      const fullContent = JSON.stringify(data, null, 2);
+      
       docs.push({
-        pageContent: content,
-        metadata: { source: file }
+        pageContent: fullContent,
+        metadata: { source: file },
       });
     }
   }
 
+  // Chunking
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
+    chunkSize: 800,
+    chunkOverlap: 100,
   });
-
-  // Split all documents
   const splitDocs = await splitter.splitDocuments(docs);
 
-  // Push into Chroma vector DB
+  // Push to Chroma
   await Chroma.fromDocuments(splitDocs, embeddings, {
     url: "http://localhost:8000",
     collectionName: "peerspace_rag",
+    collectionMetadata: {
+      description: "Main collection for peerspace RAG",
+    },
   });
 
   console.log(`Successfully ingested ${splitDocs.length} document chunks into Chroma!`);

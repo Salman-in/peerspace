@@ -1,0 +1,170 @@
+[
+  {
+    "id": 1,
+    "question": "What is the minimum attendance required for students?",
+    "expected": "Students must maintain a minimum of 75% attendance.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 5164
+  },
+  {
+    "id": 2,
+    "question": "When does the hostel gate close at night?",
+    "expected": "The hostel gate closes at 10 PM.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 596
+  },
+  {
+    "id": 3,
+    "question": "How many credits are required to complete the first year?",
+    "expected": "Students need 40 credits to complete the first year.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 707
+  },
+  {
+    "id": 4,
+    "question": "Where is the CSE department located?",
+    "expected": "The CSE department is located on the ground floor.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 679
+  },
+  {
+    "id": 5,
+    "question": "Who is allowed to use the lift?",
+    "expected": "The lift is exclusively for faculty use only; students are not allowed to use it.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 714
+  },
+  {
+    "id": 6,
+    "question": "What are the official email addresses for Sahyadri College?",
+    "expected": "The email addresses are info@sahyadri.edu.in and principal@sahyadri.edu.in.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 749
+  },
+  {
+    "id": 7,
+    "question": "How many companies visit the campus for placements annually?",
+    "expected": "Approximately 470 companies visit the campus for placements per year.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 644
+  },
+  {
+    "id": 8,
+    "question": "When did Devhost 2025 take place?",
+    "expected": "Devhost 2025 was scheduled from November 6th to November 8th, 2025.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 735
+  },
+  {
+    "id": 9,
+    "question": "What was the duration of the DevHack hackathon?",
+    "expected": "DevHack was a 36-hour National Hackathon.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 656
+  },
+  {
+    "id": 10,
+    "question": "What was Synergia'25?",
+    "expected": "Synergia'25 was a National Innovation Fest featuring events like Devhost, Aerophilia, and robotics competitions.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 653
+  },
+  {
+    "id": 11,
+    "question": "When was the COSMIC – 2025 conference scheduled?",
+    "expected": "The COSMIC – 2025 conference was scheduled for November 21-22, 2025.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 969
+  },
+  {
+    "id": 12,
+    "question": "Where is the principal's office currently located?",
+    "expected": "The principal's office is temporarily located near the GD room as the main office is under renovation.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 683
+  },
+  {
+    "id": 13,
+    "question": "Where is the AIML department located?",
+    "expected": "The AIML department is located on the 1st floor.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 650
+  },
+  {
+    "id": 14,
+    "question": "What is the CET code for Sahyadri College?",
+    "expected": "The CET code is E160.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 604
+  },
+  {
+    "id": 15,
+    "question": "Who organized Devhost 2025?",
+    "expected": "Devhost 2025 was organized by the Sahyadri Open Source Community (SOSC).",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 606
+  },
+  {
+    "id": 16,
+    "question": "When was the Sahyadri Carnival 2025 scheduled?",
+    "expected": "Sahyadri Carnival 2025 was scheduled for May 23-24, 2025.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 677
+  },
+  {
+    "id": 17,
+    "question": "Who was the Chief Guest for the 15th Graduation Day Ceremony?",
+    "expected": "The Chief Guest was Dr. Raj Mohan C, Director of Kyndryl.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 702
+  },
+  {
+    "id": 18,
+    "question": "What was the 'Oh My Grid!' event in Devhost?",
+    "expected": "'Oh My Grid!' was a Frontend / CSS Battle competition.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 685
+  },
+  {
+    "id": 19,
+    "question": "Where is the CAD lab located?",
+    "expected": "The CAD lab is located on the 5th floor.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 629
+  },
+  {
+    "id": 20,
+    "question": "What are the PG programs offered at Sahyadri?",
+    "expected": "The PG programs offered are M.Tech and MBA.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 1135
+  },
+  {
+    "id": 21,
+    "question": "What was the 'How I Met My Investor' event?",
+    "expected": "'How I Met My Investor' was a Tech-Startup Pitch / Idea Contest.",
+    "answer": "No answer",
+    "correct": false,
+    "latency": 1076
+  }
+]

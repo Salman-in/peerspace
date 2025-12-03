@@ -1,0 +1,117 @@
+{
+  "college_info": {
+    "name": "Sahyadri College of Engineering & Management",
+    "location": "Adyar, Mangaluru, Karnataka, India - 575007",
+    "email": ["info@sahyadri.edu.in", "principal@sahyadri.edu.in"],
+    "phone": ["+91 824 2277222", "+91 824 2277333", "+91 94498 45959"],
+    "cet_code": "E160",
+    "accreditations": ["NAAC", "NBA", "IE(I)"],
+    "recognitions": [
+      "AICTE",
+      "UGC",
+      "MoE",
+      "DSIR-SIRO (Ministry of Science & Technology)",
+      "Top 25 Most Innovative Private Institutions under NIRF Innovation",
+      "Approved under MeitY GENESIS Scheme"
+    ]
+  },
+
+  "history": {
+    "foundation": "Bhandary Foundation (2001)",
+    "established": "College started in 2007",
+    "campus_area_acres": 35,
+    "built_up_area_sqft": 600000,
+    "students_and_staff_strength": 4000
+  },
+
+  "programs_offered": {
+    "ug_programs": 9,
+    "pg_programs": ["M.Tech", "MBA"],
+    "research_centers": ["M.Sc (Eng)", "Ph.D"]
+  },
+
+  "student_centric_initiatives": {
+    "pbl": "Walk-in with an Idea, Walk-out with a Product",
+    "ssth": "Sahyadri Science Talent Hunt",
+    "social_innovation": "Sahyadri Center for Social Innovation",
+    "spss": "Sahyadri Project Support Scheme",
+    "launchpads": ["Dreamers", "Challengers", "SOSC", "Maker Space"]
+  },
+
+  "skill_focused_learning": {
+    "emerging_tech_workspaces": [
+      "AI-ML", "Embedded Systems", "Industry 4.0", "IoT",
+      "3D Printing", "Robotics", "Automation"
+    ],
+    "facilities": {
+      "skill_lab_capacity": 250,
+      "gig_workspace_capacity": 100
+    }
+  },
+
+  "innovation_and_incubation": {
+    "incubation_centers": [
+      "K-Tech Innovation Center",
+      "MSME TBI Host Institute",
+      "ACIC (NITI Aayog)"
+    ],
+    "startup_support": {
+      "annual_startup_scaling_target": 30,
+      "student_startups_on_campus": 22,
+      "startup_space_sqft": 150000
+    }
+  },
+
+  "centers_of_excellence": {
+    "future_technology": {
+      "supported_by": [
+        "VGST", 
+        "Department of Electronics, IT, BT, S&T, GoK",
+        "Karnataka Council for Science & Technology"
+      ],
+      "services": ["Innovation consultancy", "Industry collaboration"]
+    }
+  },
+
+  "student_exposure": {
+    "competitions": "IITs, NITs, National-level events",
+    "international_opportunities": true,
+    "smart_india_hackathon_host": true
+  },
+
+  "infrastructure": {
+    "style": "Courtyard architecture",
+    "highlights": [
+      "Spacious classrooms",
+      "Modern laboratories",
+      "Central library",
+      "In-house industries",
+      "Startup units",
+      "Launchpads"
+    ]
+  },
+
+  "campus_life": {
+    "hostel": {
+      "boys_hostel": true,
+      "girls_hostel": true
+    },
+    "transportation": true,
+    "sports": true,
+    "cultural_activities": true
+  },
+
+  "achievements": {
+    "mhrd_iic_star_rating": {
+      "years": [2019, 2020, 2021],
+      "rating": "4-star"
+    },
+    "collaborations": "National & international institutions, industries"
+  },
+
+  "contact": {
+    "address": "Sahyadri Campus, Adyar, Mangaluru, Karnataka - 575007",
+    "email": ["info@sahyadri.edu.in", "principal@sahyadri.edu.in"],
+    "phone_numbers": ["+91 824 2277222", "+91 824 2277333", "+91 94498 45959"]
+  } 
+}

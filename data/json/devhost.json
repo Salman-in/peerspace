@@ -1,0 +1,104 @@
+{
+  "devhost_2025": {
+    "event_name": "Devhost 2025",
+    "host_organization": "Sahyadri Open Source Community (SOSC)",
+    "venue": "Sahyadri College of Engineering & Management, Adyar, Mangalore",
+    "dates": {
+      "start": "2025-11-06",
+      "end": "2025-11-08"
+    },
+    "main_events": [
+      {
+        "event_id": "DEVHACK2025",
+        "type": "36-hour National Hackathon",
+        "description": "Live hackathon to build solutions on real-world industry problem statements.",
+        "schedule_summary": "Starts after pre-hackathon talks (Nov 6), ends early morning after 36 hrs (Nov 8).",
+        "notes": "Participants, mentors, judges from industry."
+      }
+    ],
+    "sub_events": [
+      {
+        "event_id": "R00TQuest",
+        "name": "R00TQuest – Capture The Flag (CTF)",
+        "date": "2025-11-07",
+        "time": "11:00 - 12:30",
+        "type": "Cybersecurity / CTF"
+      },
+      {
+        "event_id": "HowIMetMyInvestor",
+        "name": "How I Met My Investor – Pitching Event",
+        "date": "2025-11-07",
+        "time": "11:00 - 12:30",
+        "type": "Tech-Startup Pitch / Idea Contest"
+      },
+      {
+        "event_id": "OhMyGrid",
+        "name": "Oh My Grid! – Frontend / CSS Battle",
+        "date": "2025-11-07",
+        "time": "15:00 - 17:00",
+        "type": "Frontend / Web Design Competition"
+      },
+      {
+        "event_id": "Onslaught",
+        "name": "O(n)Slaught – Competitive Programming Battle",
+        "date": "2025-11-07",
+        "time": "15:00 - 17:00",
+        "type": "Competitive Programming"
+      },
+      {
+        "event_id": "BGMI_Battle",
+        "name": "Loot & Load – BGMI Tournament",
+        "date": "2025-11-07",
+        "time": "09:00 onwards",
+        "type": "Gaming Tournament"
+      },
+      {
+        "event_id": "TechTacToe",
+        "name": "Tech-Tac-Toe",
+        "date": "2025-11-08",
+        "time": "09:00 - 10:30",
+        "type": "Logic/Game Competition"
+      },
+      {
+        "event_id": "BlazingFingers",
+        "name": "Blazing Fingers – Typing Speed / Accuracy Contest",
+        "date": "2025-11-06 to 2025-11-08",
+        "time": "09:00 AM (daily start)",
+        "type": "Typing Contest"
+      },
+      {
+        "event_id": "SpeedCuber",
+        "name": "Speed Cuber – Rubik's Cube Speed Challenge",
+        "date": "2025-11-06 to 2025-11-08",
+        "time": "09:00 AM (daily start)",
+        "type": "Puzzle / Speed"
+      },
+      {
+        "event_id": "ScavengerHunt",
+        "name": "Scavenger Hunt – Campus Quest",
+        "date": "2025-11-06 to 2025-11-08",
+        "time": "09:00 AM (daily start)",
+        "type": "Scavenger / Treasure Hunt"
+      }
+    ],
+    "contact": {
+      "email": "synergia@sahyadri.edu.in",
+      "main_organizers": [
+        { "name": "Jeevitha J. S.", "role": "Chief Event Coordinator" },
+        { "name": "Vaibhav Shetty", "role": "Co-ordinator" }
+      ]
+    },
+    "description": "Devhost 2025 — the annual flagship tech-festival by SOSC — featuring a 36-hour national hackathon (DevHack), developer talks, workshops, competitive events (programming, gaming, web), open to students across India.",
+    "notes": [
+      "Devhost 2025 is part of Synergia’25 festival (Nov 6–8, 2025) at Sahyadri College. :contentReference[oaicite:4]{index=4}",
+      "Devhost includes DevHack 36-hour hackathon + multiple competitions & events. :contentReference[oaicite:5]{index=5}"
+    ],
+    "source_links": [
+      "https://devhost.sosc.org.in/",
+      "https://devhost.sosc.org.in/brochure/devhost_2025.pdf",
+      "https://devhost.sosc.org.in/brochure/devhost_event_rulebook.pdf",
+      "https://www.mangaloretoday.com/mainnewsprint/Sahyadri-College-to-host-Synergia-25-National-Innovation-Fest-from-6th-8th-Nov-2025.html",
+      "https://www.mangalorean.com/sahyadri-college-proudly-presents-synergia25-from-6th-8th-nov-2025/"
+    ]
+  }
+}

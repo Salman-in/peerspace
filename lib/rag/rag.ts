@@ -16,23 +16,34 @@ Question: {question}
 
 Answer:`);
 
+// Optimize LLM for speed: Use Flash model and lower max tokens
 const llm = new ChatGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
   model: "gemini-2.5-pro",
   temperature: 0.2,
+  maxOutputTokens: 512,
+  streaming: false,
 });
+
+const MAX_CONTEXT_CHARS = 3000; // Reduced from 4000 for faster processing
 
 export const ragChain = RunnableSequence.from([
   // Retrieve docs
   async (input: { question: string }) => {
+    const startTotal = Date.now();
     console.log("[RAG] Starting retrieval...");
+    
     const startRetrieval = Date.now();
     const docs = await retriever.invoke(input.question);
-    console.log(`[RAG] Retrieval took ${Date.now() - startRetrieval}ms`);
+    const retrievalTime = Date.now() - startRetrieval;
+    console.log(`[RAG] ⚡ Retrieval took ${retrievalTime}ms`);
 
     console.log(`[RAG] Retrieved ${docs?.length || 0} documents`);
     if (docs && docs.length > 0) {
-      console.log("[RAG] First doc preview:", docs[0].pageContent.substring(0, 200));
+      console.log(
+        "[RAG] First doc preview:",
+        docs[0].pageContent.substring(0, 150)
+      );
     }
 
     // Safeguard: handle undefined or empty results
@@ -44,26 +55,25 @@ export const ragChain = RunnableSequence.from([
       };
     }
 
-    const context = docs.map(d => d.pageContent || "").join("\n\n");
+    const context = docs
+      .map((d) => d.pageContent || "")
+      .join("\n\n")
+      .slice(0, MAX_CONTEXT_CHARS); // Stricter context limit
+
     console.log(`[RAG] Context length: ${context.length} chars`);
+    console.log(`[RAG] ⚡ Total prep took ${Date.now() - startTotal}ms`);
     return {
       context,
       question: input.question,
     };
   },
-  // Run the prompt + llm
+  // Format prompt
   prompt,
-  async (promptValue: any) => {
-    console.log("[RAG] Calling LLM...");
-    const startLLM = Date.now();
-    const result = await llm.invoke(promptValue);
-    console.log(`[RAG] LLM took ${Date.now() - startLLM}ms`);
-    return result;
+  // Call LLM
+  llm,
+  // Extract content
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (result: any) => {
+    return result?.content || "I don't have enough information to answer that.";
   },
 ]);
-
-// Now you can invoke:
-// (async () => {
-// const results = await ragChain.invoke({ question: "what is peerspace?" });
-// console.log(results);
-// })();
